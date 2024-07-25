@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cryptopals", "Cryptopals.csproj", "{F759BDEC-DFE4-48F0-9A2E-15BAE11774AA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cryptopals.Tests", "..\Cryptopals.Tests\Cryptopals.Tests.csproj", "{56D62414-F27B-4455-A87F-34E9E6059701}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F759BDEC-DFE4-48F0-9A2E-15BAE11774AA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F759BDEC-DFE4-48F0-9A2E-15BAE11774AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F759BDEC-DFE4-48F0-9A2E-15BAE11774AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F759BDEC-DFE4-48F0-9A2E-15BAE11774AA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{56D62414-F27B-4455-A87F-34E9E6059701}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{56D62414-F27B-4455-A87F-34E9E6059701}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{56D62414-F27B-4455-A87F-34E9E6059701}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{56D62414-F27B-4455-A87F-34E9E6059701}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

@@ -4,7 +4,7 @@ public class Converters
 {
     public static string HexToBase64(string hexString)
     {
-        byte[] bytes = HexToBytes(hexString);
+        var bytes = HexToBytes(hexString);
         return Convert.ToBase64String(bytes); // Convert is a system class
     } 
     
@@ -21,6 +21,6 @@ public class Converters
     
     public static string BytesToHex(byte[] bytes)
     {
-        return BitConverter.ToString(bytes).Replace("-", "").ToLower();
+        return BitConverter.ToString(bytes).Replace("-", "");
     }
 }

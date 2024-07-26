@@ -12,9 +12,9 @@ public class Decrypt
     }
 
     // Given a hex encoded string, XOR it against a single character and return a DecryptionResult object
-    public static DecryptionResult SingleCharacterXor(string Encoded)
+    public static DecryptionResult SingleCharacterXor(string encoded)
     {
-        var encodedBytes = Converters.HexToBytes(Encoded);
+        var encodedBytes = Converters.HexToBytes(encoded);
         var keysBytes = System.Text.Encoding.ASCII.GetBytes(Keys);
 
         var results = keysBytes.Select(key =>

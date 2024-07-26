@@ -18,4 +18,11 @@ public class ConvertersTests
         var expected = "batman"u8.ToArray(); // converting text string straight to byte array
         Assert.Equal(expected, result);
     }
+    
+    [Fact]
+    public void BytesToHex()
+    {
+        var result = Converters.BytesToHex("batman"u8.ToArray());
+        Assert.Equal("6261746D616E", result);
+    }
 }

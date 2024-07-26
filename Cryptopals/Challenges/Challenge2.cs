@@ -14,7 +14,7 @@ namespace Cryptopals.Challenges
             
             // XOR the two byte arrays together and print the result
             var resultBytes = Comparators.Xor(bytes1, bytes2);
-            return Converters.BytesToHex(resultBytes);
+            return Converters.BytesToHex(resultBytes).ToLower();
         }
     }
 }

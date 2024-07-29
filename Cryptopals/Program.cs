@@ -6,7 +6,7 @@ class Program
 {
     private static void Main(string[] args)
     {
-        var result = Challenge5.Run();
+        var result = Challenge6.Run();
         Console.WriteLine(result);
     }
 }

@@ -46,17 +46,4 @@ public class Decrypt
         // Return the first result in the list
         return results[0];
     }
-
-    public static string RepeatingKeyXor(string text, string key)
-    {
-        var textBytes = System.Text.Encoding.ASCII.GetBytes(text);
-        var keyBytes = System.Text.Encoding.ASCII.GetBytes(key);
-
-        var resultBytes = textBytes.Select((b, i) =>
-                Comparators.Xor(new byte[] { b }, new byte[] { keyBytes[i % keyBytes.Length] }))
-            .SelectMany(x => x)
-            .ToArray();
-
-        return Converters.BytesToHex(resultBytes);
-    }
 }

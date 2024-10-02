@@ -1,6 +1,4 @@
-﻿
-
-using Cryptopals.Challenges;
+﻿using Cryptopals.Challenges;
 
 class Program
 {

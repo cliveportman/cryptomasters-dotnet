@@ -23,4 +23,20 @@ public class Converters
     {
         return BitConverter.ToString(bytes).Replace("-", "");
     }
+    
+    // Given an array of bytes (generally converted from text), chunk it up into lengths of a given size
+    public static IEnumerable<byte[]> ChunkBytes(byte[] bytes, int size)
+    {
+        return bytes.Select((b, i) => new { b, i })
+            .GroupBy(x => x.i / size)
+            .Select(g => g.Select(x => x.b).ToArray());
+    }
+
+    // @todo Check this
+    // Transpose an array of bytes, i.e. e.g. put the first bytes of each block into an array, then the second byte of each block into another array, etc.
+    public static IEnumerable<byte[][]> TransposeArraysOfBytes(IEnumerable<byte[]> blocks, int chunkSize)
+    {
+        return Enumerable.Range(0, chunkSize)
+            .Select(i => blocks.Where((_, j) => j % chunkSize == i).ToArray());
+    }
 }

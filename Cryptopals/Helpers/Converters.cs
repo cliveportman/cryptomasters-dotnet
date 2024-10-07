@@ -31,12 +31,20 @@ public class Converters
             .GroupBy(x => x.i / size)
             .Select(g => g.Select(x => x.b).ToArray());
     }
-
-    // @todo Check this
-    // Transpose an array of bytes, i.e. e.g. put the first bytes of each block into an array, then the second byte of each block into another array, etc.
-    public static IEnumerable<byte[][]> TransposeArraysOfBytes(IEnumerable<byte[]> blocks, int chunkSize)
+    
+    // Given an IEnumerable of byte arrays, transpose them
+    public static IEnumerable<byte[]> TransposeArraysOfBytes(IEnumerable<byte[]> blocks)
     {
-        return Enumerable.Range(0, chunkSize)
-            .Select(i => blocks.Where((_, j) => j % chunkSize == i).ToArray());
+        var blockList = blocks.ToList();
+        var transposed = new byte[blockList[0].Length][];
+        for (var i = 0; i < blockList[0].Length; i++)
+        {
+            transposed[i] = new byte[blockList.Count];
+            for (var j = 0; j < blockList.Count; j++)
+            {
+                transposed[i][j] = blockList[j][i];
+            }
+        }
+        return transposed;
     }
 }

@@ -36,6 +36,25 @@ public class Converters
     public static IEnumerable<byte[]> TransposeArraysOfBytes(IEnumerable<byte[]> blocks)
     {
         var blockList = blocks.ToList();
+        if (blockList.Count == 0)
+        {
+            throw new ArgumentException("The blocks collection is empty.");
+        }
+
+        // Pad shorter arrays with default value (0)
+        int maxLength = blockList.Max(block => block.Length);
+        for (int i = 0; i < blockList.Count; i++)
+        {
+            if (blockList[i].Length < maxLength)
+            {
+                var tempArray = blockList[i];
+                Array.Resize(ref tempArray, maxLength);
+                // Using a ref, which is a bit like a pointer - read more on this
+                blockList[i] = tempArray;
+            }
+        }
+
+        
         var transposed = new byte[blockList[0].Length][];
         for (var i = 0; i < blockList[0].Length; i++)
         {

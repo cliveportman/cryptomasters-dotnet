@@ -2,7 +2,7 @@ namespace Cryptopals;
 
 public class Decrypt
 {
-    private const string Keys = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
+    private const string Keys = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+:,.-_()!$ @;";
 
     public class DecryptionResult
     {
@@ -45,5 +45,12 @@ public class Decrypt
 
         // Return the first result in the list
         return results[0];
+    }
+
+    // Given a hex encoded string and a hex-encoded key, XOR the two together and return a DecryptionResult object
+    public static DecryptionResult RepeatingKeyXor(string encoded, string key)
+    {
+        var encodedBytes = Converters.HexToBytes(encoded);
+        var keyBytes = Converters.HexToBytes(key);
     }
 }

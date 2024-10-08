@@ -12,11 +12,4 @@ public class DecryptTests
         Assert.Equal(586, result.Score);
         Assert.Equal("Cooking MC's like a pound of bacon", result.DecryptedText);
     }
-    
-    [Fact]
-    public void RepeatingKeyXor()
-    {
-        var result = Decrypt.RepeatingKeyXor("I'm vengeance!", "BAT").ToLower();
-        Assert.Equal("0b66396237312c2631232f372760", result);
-    }
 }

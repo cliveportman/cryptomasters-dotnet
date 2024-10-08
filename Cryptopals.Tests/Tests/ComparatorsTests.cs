@@ -25,4 +25,13 @@ public class ComparatorsTests
         var result = Comparators.ScoreText("What time is love?");
         Assert.Equal(348, result);
     }
+
+    [Fact]
+    public void HammingDistance()
+    {
+        var text1Bytes = System.Text.Encoding.ASCII.GetBytes("this is a test");
+        var text2Bytes = System.Text.Encoding.ASCII.GetBytes("wokka wokka!!!");
+        var result = Comparators.HammingDistance(text1Bytes, text2Bytes);
+        Assert.Equal(37, result);
+    }
 }

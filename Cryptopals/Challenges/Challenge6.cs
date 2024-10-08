@@ -57,34 +57,37 @@ namespace Cryptopals.Challenges
                 
                 // 5. Now that you probably know the KEYSIZE: break the ciphertext into blocks of KEYSIZE length.
                 // Start by taking the text and chunking it up into blocks of length keySize
-                var blocksOfKeySize = Converters.ChunkBytes(bytes, keySize);      
+                var blocksOfKeySize = Converters.ChunkBytes(bytes, keySize);     
+                
                 // 6. Now transpose the blocks: make a block that is the first byte of every block, and a block that is the second byte of every block, and so on.
                 // Transpose the blocks, e.g. put the first bytes of each block into an array, then the second byte of each block into another array, etc.
-                // @todo Check this
-                var transposedBlocks = Enumerable.Range(0, keySize)
-                .Select(i => blocksOfKeySize.Select(block => block.ElementAtOrDefault(i)).ToArray());
+                var transposedBlocks = Converters.TransposeArraysOfBytes(blocksOfKeySize);
                 
                 Console.WriteLine("The number of blocks is " + blocksOfKeySize.Count());
                 // The number of transposed blocks should match the keysize - add a test for this?
                 Console.WriteLine("The number of transposed blocks is " + transposedBlocks.Count());
                 
                 // 7. Solve each block as if it was single-character XOR. You already have code to do this.
+                // Each transposed block is of type IEnumerable<byte[]> - convert to hex-endcoded strings and XOR
+                var keyCharacters = transposedBlocks
+                    .Select(block => 
+                    {
+                        var hexBlock = Converters.BytesToHex(block);
+                        var decryptionResult = Decrypt.SingleCharacterXor(hexBlock);
+                        Console.WriteLine($"Block: {hexBlock}, Character: {decryptionResult.Character}, Score: {decryptionResult.Score}");
+                        return decryptionResult.Character;
+                    })
+                    .ToArray();
                 
                 // 8. For each block, the single-byte XOR key that produces the best looking histogram is the repeating-key XOR key byte for that block. Put them together and you have the key.
+                // Note that to get this I had to extend the XOR key to include more characters:
+                // "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+:,.-_()!$ @;"
+                var key = new string(keyCharacters);
+                Console.WriteLine("The key is: " + key);
                 
+                // Decrypt the encrypted text with the key.
+                // Hex-encode the key
                 
-                
-                
-                // // Split the bytes into blocks of keySize
-                // var blocksOfKeySize = bytes.Select((b, i) => new { b, i })
-                //     .GroupBy(x => x.i / keySize)
-                //     .Select(g => g.Select(x => x.b).ToArray());
-                // // Transpose the blocks, e.g. put the first bytes of each block into an array, then the second byte of each block into another array, etc.
-                // var transposedBlocks = Enumerable.Range(0, keySize)
-                //     .Select(i => blocksOfKeySize.Select(block => block.ElementAtOrDefault(i)).ToArray());
-                // // Solve each block as if it was a single character XOR
-                // var key = transposedBlocks.Select(block => Decrypt.SingleCharacterXor(Encoding.UTF8.GetString(block))).Select(result => result).ToArray();
-                // //Console.WriteLine(key);
                 
             }
             // Catching exceptions and providing a more helpful message (more a learning exercise than anything else)

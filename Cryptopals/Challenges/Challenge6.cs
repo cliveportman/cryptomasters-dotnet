@@ -42,53 +42,47 @@ namespace Cryptopals.Challenges
                     };
                 }).OrderBy(x => x.Distance).ToList();
                 
-                // Print out the results, the more blocks we use the more accurate the results should be. Seems to be 29 is the best key size.
+                // Logging the results, the more blocks we use the more accurate the results should be. Seems to be 29 is the best key size.
                 // foreach (var keySizeDistance in keySizeDistances)
                 // {
                 //     Console.WriteLine(keySizeDistance.KeySize + ": " + keySizeDistance.Distance);
                 // }
                 
-                // Get the smallest key size
+                // Get the key size - it'll be the first one in the list
                 var keySize = keySizeDistances.First().KeySize;
                 Console.WriteLine("The keysize producing the lowest average Hamming distance is " + keySize);
                 
                 // We now have the key size and can proceed with the rest of the challenge...
                 // Which means decrypting the text using the key size
-                
-                // 5. Now that you probably know the KEYSIZE: break the ciphertext into blocks of KEYSIZE length.
                 // Start by taking the text and chunking it up into blocks of length keySize
-                var blocksOfKeySize = Converters.ChunkBytes(bytes, keySize);     
-                
-                // 6. Now transpose the blocks: make a block that is the first byte of every block, and a block that is the second byte of every block, and so on.
+                var blocksOfKeySize = Converters.ChunkBytes(bytes, keySize);
                 // Transpose the blocks, e.g. put the first bytes of each block into an array, then the second byte of each block into another array, etc.
                 var transposedBlocks = Converters.TransposeArraysOfBytes(blocksOfKeySize);
                 
-                Console.WriteLine("The number of blocks is " + blocksOfKeySize.Count());
-                // The number of transposed blocks should match the keysize - add a test for this?
-                Console.WriteLine("The number of transposed blocks is " + transposedBlocks.Count());
+                // Just some logging - the number of transposed blocks should match the key size...
+                // Console.WriteLine("The number of blocks is " + blocksOfKeySize.Count());
+                // Console.WriteLine("The number of transposed blocks is " + transposedBlocks.Count());
                 
-                // 7. Solve each block as if it was single-character XOR. You already have code to do this.
-                // Each transposed block is of type IEnumerable<byte[]> - convert to hex-endcoded strings and XOR
+                // Convert to hex-encoded strings and XOR to get the key characters
                 var keyCharacters = transposedBlocks
                     .Select(block => 
                     {
                         var hexBlock = Converters.BytesToHex(block);
+                        // I had to update the XOR character list to DEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+:,.-_()!$ @;"
                         var decryptionResult = Decrypt.SingleCharacterXor(hexBlock);
-                        Console.WriteLine($"Block: {hexBlock}, Character: {decryptionResult.Character}, Score: {decryptionResult.Score}");
+                        //Console.WriteLine($"Block: {hexBlock}, Character: {decryptionResult.Character}, Score: {decryptionResult.Score}");
                         return decryptionResult.Character;
                     })
                     .ToArray();
-                
-                // 8. For each block, the single-byte XOR key that produces the best looking histogram is the repeating-key XOR key byte for that block. Put them together and you have the key.
-                // Note that to get this I had to extend the XOR key to include more characters:
-                // "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+:,.-_()!$ @;"
+                // Then put them together and we have the key.
                 var key = new string(keyCharacters);
                 Console.WriteLine("The key is: " + key);
                 
                 // Decrypt the encrypted text with the key.
-                // Hex-encode the key
-                
-                
+                var hexKey = Converters.BytesToHex(Encoding.ASCII.GetBytes(key));
+                var decrypted = Decrypt.DecryptRepeatingKey(Converters.BytesToHex(bytes), hexKey);
+                return decrypted;
+
             }
             // Catching exceptions and providing a more helpful message (more a learning exercise than anything else)
             catch (Exception ex)
@@ -100,8 +94,7 @@ namespace Cryptopals.Challenges
                     _ => "Error reading file: " + ex.Message
                 };
             }
-
-            return "";
+            
         }
     }
 }

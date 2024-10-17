@@ -2,9 +2,9 @@
 
 class Program
 {
-    private static void Main(string[] args)
+    private static void Main()
     {
-        var result = Challenge6.Run();
+        var result = Challenge7.Run();
         Console.WriteLine(result);
     }
 }

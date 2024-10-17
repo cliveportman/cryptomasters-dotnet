@@ -6,7 +6,8 @@ public class Converters
     {
         var bytes = HexToBytes(hexString);
         return Convert.ToBase64String(bytes); // Convert is a system class
-    } 
+    }
+    
     
     public static byte[] HexToBytes(string hexString)
     {
@@ -17,6 +18,11 @@ public class Converters
             .Where(x => x % 2 == 0) // Filters out the odd numbers (two hex characters make up a byte)
             .Select(x => Convert.ToByte(hexString.Substring(x, 2), 16)) // Extracts a substring of 2 characters and converts it to a byte
             .ToArray();// Converts the sequence of bytes to an array
+    }
+    
+    public static byte[] Base64ToBytes(string base64String)
+    {
+        return Convert.FromBase64String(base64String);
     }
     
     public static string BytesToHex(byte[] bytes)
@@ -53,8 +59,6 @@ public class Converters
                 blockList[i] = tempArray;
             }
         }
-
-        
         var transposed = new byte[blockList[0].Length][];
         for (var i = 0; i < blockList[0].Length; i++)
         {

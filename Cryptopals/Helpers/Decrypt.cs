@@ -1,3 +1,5 @@
+using System.Security.Cryptography;
+
 namespace Cryptopals;
 
 public class Decrypt
@@ -79,5 +81,39 @@ public class Decrypt
             .ToArray();
 
         return System.Text.Encoding.ASCII.GetString(resultBytes);
+    }
+    
+    public static byte[] DecryptAes128Ecb(byte[] encodedBytes, byte[] keyBytes)
+    {
+        /*
+         * The using keyword ensure the resources are disposed of correctly when the block is exited.
+         * The alternative would be to use a try/finally block to ensure the resources are disposed of correctly
+         * with the finally block containing the Dispose() method.
+         */
+        using var aes = Aes.Create();
+        // Required cipher mode is ECB
+        aes.Mode = CipherMode.ECB;
+        /*
+         * PKCS7 pads the plain text with a series of bytes all with the same value as the number of padding bytes, 
+         * e.g. if 3 bytes are needed, the padding would be 03 03 03:
+         * Plaintext: "HELLO"
+         * Block size: 8 bytes
+         * Padded plaintext: "HELLO\x03\x03\x03"
+        */
+        aes.Padding = PaddingMode.PKCS7;     
+        aes.KeySize = 128;
+        aes.Key = keyBytes;
+        // ECB mode doesn't use an (Initialisation Vector) IV, but we need to set it to null explicitly
+        aes.IV = new byte[16];              
+
+        // Create the decryptor and use it to decrypt the encoded bytes
+        var decryptor = aes.CreateDecryptor();
+        using var msDecrypt = new MemoryStream();
+        using (var csDecrypt = new CryptoStream(msDecrypt, decryptor, CryptoStreamMode.Write))
+        {
+            csDecrypt.Write(encodedBytes, 0, encodedBytes.Length);
+            csDecrypt.FlushFinalBlock();
+        }
+        return msDecrypt.ToArray();
     }
 }

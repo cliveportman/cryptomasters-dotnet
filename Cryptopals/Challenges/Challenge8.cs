@@ -20,12 +20,41 @@ namespace Cryptopals.Challenges
 
         public static string Run()
         {
+            // Grab the texts from the source file and convert from hex to bytes
+            var lines = File.ReadAllLines(Path.Combine(Utility.Assets, "challenge-8.txt"));
+            Console.WriteLine($"Number of lines: {lines.Length}");
+            var linesAsBytes = lines.Select(Converters.HexToBytes).ToArray();
+            // For each lineAsBytes, break it into 16-byte blocks
+            foreach (var line in linesAsBytes)
+            {
+                Console.WriteLine($"Number of bytes in line: {line.Length}");
+                var chunks = Converters.ChunkBytes(line, 16).ToArray();
+                Console.WriteLine($"Number of chunks: {chunks.Length}");
+var groups = chunks.GroupBy(chunk => chunk).Where(g => g.Count() > 1).ToArray();
+Console.WriteLine($"Duplicate Count: {groups}");
+
+}
+
+
+
+            //var keySizeDistances = keySizes.Select(keySize =>
+            //var blocks = linesAsBytes.Select(Converters.ChunkBytes).ToArray();
+            // For each block, check if there are any duplicates
+            //var duplicates = blocks.Select(block => block.GroupBy(x => x).Any(g => g.Count() > 1)).ToArray();
+            // If there are any duplicates, the text is probably encrypted with AES-128 in ECB mode
+            // if (duplicates.Any(x => x))
+            // {
+            //     return "ECB";
+            // }
+            // else
+            
+            
+            
+            
             return "Not implemented";
             // try
             // {
-            //     var lines = File.ReadAllLines(Path.Combine(Utility.Assets, "challenge-8.txt"));
-            //     // These lines are base64 encoded - join them together and convert to bytes
-            //     var encodedBytes = Converters.Base64ToBytes(string.Join("", lines));
+            //     
             //     var keyBytes = Encoding.ASCII.GetBytes(Key);
             //     var decryptedBytes = Decrypt.DecryptAes128Ecb(encodedBytes, keyBytes);
             //     return Encoding.ASCII.GetString(decryptedBytes);

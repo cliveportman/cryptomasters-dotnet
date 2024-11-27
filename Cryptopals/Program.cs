@@ -4,7 +4,7 @@ class Program
 {
     private static void Main()
     {
-        var result = Challenge7.Run();
+        var result = Challenge8.Run();
         Console.WriteLine(result);
     }
 }
